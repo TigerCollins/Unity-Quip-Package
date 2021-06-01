@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 112961591}
   - component: {fileID: 112961595}
   - component: {fileID: 112961592}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,6 +189,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _characterController: {fileID: 112961591}
+  _controlType: 0
+  isPlayer: 1
+  movementMultipler: 2
+  maxMovementClamp: 1
+  _moveAxis: {x: 0, y: 0}
   _gravitySettings:
     useCustomGravity: 1
     customGravityDetails: {x: 0, y: -0.09, z: 0}
@@ -479,7 +484,7 @@ GameObject:
   - component: {fileID: 1422464787}
   - component: {fileID: 1422464786}
   m_Layer: 0
-  m_Name: Cube
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -945,7 +950,19 @@ MonoBehaviour:
       m_Calls: []
   m_ActionEvents:
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1983969878}
+        m_TargetAssemblyTypeName: BasicMovementScript, Assembly-CSharp
+        m_MethodName: adjustMovementVector
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 2225537d-a752-418e-80c6-413f13f05f45
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
@@ -992,6 +1009,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: dd16f25d-8085-4851-ada2-b2ccd6874721
     m_ActionName: UI/TrackedDeviceOrientation
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6f3d4e28-a4fe-4dcc-b2a0-edb7dbee9bec
+    m_ActionName: Player/ResetPlayer[/Keyboard/r]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -1024,7 +1045,7 @@ GameObject:
   - component: {fileID: 1983969880}
   - component: {fileID: 1983969879}
   - component: {fileID: 1983969878}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1043,7 +1064,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66e098a1ac86bc842b406b04dae828f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterController: {fileID: 0}
+  _characterController: {fileID: 1983969879}
+  _controlType: 0
+  isPlayer: 1
+  movementMultipler: 1
+  maxMovementClamp: 1
+  _moveAxis: {x: 0, y: 0}
   _gravitySettings:
     useCustomGravity: 0
     customGravityDetails: {x: 0, y: 0, z: 0}
