@@ -185,10 +185,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 112961589}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da75d0933c3484546a6461bc97ec04c1, type: 3}
+  m_Script: {fileID: 11500000, guid: 66e098a1ac86bc842b406b04dae828f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravity: {x: 0, y: 0, z: 0}
+  _characterController: {fileID: 112961591}
+  _gravitySettings:
+    useCustomGravity: 1
+    customGravityDetails: {x: 0, y: -0.09, z: 0}
+    previousGravityStrength: {x: 0, y: 0, z: 0}
+    onCustomGravityStrengthChange:
+      m_PersistentCalls:
+        m_Calls: []
+  _moveVector: {x: 0, y: 0, z: 0}
 --- !u!23 &112961593
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1035,8 +1043,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66e098a1ac86bc842b406b04dae828f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveVector: {x: 0, y: 0, z: 0}
-  isGrounded: 0
+  _characterController: {fileID: 0}
+  _gravitySettings:
+    useCustomGravity: 0
+    customGravityDetails: {x: 0, y: 0, z: 0}
+    previousGravityStrength: {x: 0, y: 0, z: 0}
+    onCustomGravityStrengthChange:
+      m_PersistentCalls:
+        m_Calls: []
+  _moveVector: {x: 0, y: 0, z: 0}
 --- !u!143 &1983969879
 CharacterController:
   m_ObjectHideFlags: 0
