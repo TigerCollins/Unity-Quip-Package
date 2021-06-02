@@ -9,21 +9,17 @@ public class QuipController : MonoBehaviour
     /// Visible in inspector
     /// </summary>
     public CharacterType characterType;
-    public QuipLibrary quipLibrary;
-
     [SerializeField]
+    [ReadOnly]
     [Tooltip("The lower the number, the dumber the quip")]
-    private int _intelligenceLevel;
-    [SerializeField]
-    [Range(1,10)]
-    private int _maxIntelligenceLevel;
+    public int maxIntelligenceLevel;
+
+
+    public QuipLibrary quipLibrary;
 
     /// <summary>
     /// Hidden in inspector
     /// </summary>
-
-    [HideInInspector]
-    public int maxIntelligence = 4;
 
     public enum CharacterType
     {
@@ -43,35 +39,22 @@ public class QuipController : MonoBehaviour
     public void Awake()
     {
         UpdateQuipNameInspector();
-
+        UpdateIntelligenceLevelInspector();
     }
 
 
     private void Update()
     {
-        if(!Application.isPlaying)
-        {
+       // if(!Application.isPlaying)
+        //{
             UpdateQuipNameInspector();
             UpdateIntelligenceLevelInspector();
-            UpdateCharacterName();
-        }
+       // }
 
+   
     }
 
-    public int IntelligenceCheck
-    {
-        get
-        {
-            _intelligenceLevel = Mathf.Clamp(_intelligenceLevel, 1, maxIntelligence);
-            return _intelligenceLevel;
-        }
-
-        set
-        {
-            _intelligenceLevel = Mathf.Clamp(value,1,maxIntelligence);
-            UpdateIntelligenceLevelInspector();
-        }
-    }
+   
 
 
 #if UNITY_EDITOR
@@ -88,30 +71,18 @@ public class QuipController : MonoBehaviour
             }
     }
 
-    private void UpdateIntelligenceLevelInspector()
+    public void UpdateIntelligenceLevelInspector()
     {
         for (int i = 0; i < quipLibrary.character.Length; i++)
         {
-            for (int ii = 0; ii < quipLibrary.character[i].intelligenceLevel.Length; ii++)
+            for (int ii = 0; ii < quipLibrary.character[i].intelligenceLevel.Capacity; ii++)
             {
                 quipLibrary.character[i].intelligenceLevel[ii].UpdateElementName(ii);
             }
-        }
-     
+        }     
     }
 
-    private void UpdateCharacterName()
-
-    {
-        for (int i = 0; i < quipLibrary.character.Length; i++)
-        {
-            quipLibrary.character[i].name = characterType.ToString();
-        }
-    }
 #endif
-
-
-
 }
 
 
@@ -127,7 +98,12 @@ public class Person
     [HideInInspector]
     public string name;
     public QuipController.CharacterType characterType;
-    public IntelligenceLevel[] intelligenceLevel;
+    public List<IntelligenceLevel> intelligenceLevel = new List<IntelligenceLevel>();
+
+    public void UpdatePlayerName()
+    {
+        name = characterType.ToString();
+    }
 }
 
 [System.Serializable]

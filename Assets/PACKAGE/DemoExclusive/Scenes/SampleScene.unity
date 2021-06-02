@@ -169,7 +169,7 @@ GameObject:
   - component: {fileID: 112961595}
   - component: {fileID: 112961592}
   m_Layer: 6
-  m_Name: NPC
+  m_Name: NPC1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -185,7 +185,8 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.2377, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1784949455}
   m_Father: {fileID: 1296093535}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -239,6 +240,8 @@ MonoBehaviour:
   _raycastPoint: {fileID: 0}
   _raycastDistance: 0
   raycastColour: {r: 0, g: 0, b: 0, a: 0}
+  raycastScriptReferences:
+    quipScript: {fileID: 0}
 --- !u!23 &112961593
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -301,6 +304,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ce2efc6737d8d469b25d2e170a92f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterType: 0
+  quipController: {fileID: 1787859004}
+  tmp: {fileID: 1784949456}
+  randomiseIntelligenceOnAwake: 1
+  intelligenceLevel: 0
+  selectedQuip: 
+  invisible: {r: 0, g: 0, b: 0, a: 0}
+  visible: {r: 1, g: 1, b: 1, a: 1}
+  quipTime: 1
+  canTrigger: 1
 --- !u!1 &151432330
 GameObject:
   m_ObjectHideFlags: 0
@@ -1154,6 +1167,177 @@ Transform:
   m_Father: {fileID: 2139906163}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1784949454
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1784949455}
+  - component: {fileID: 1784949457}
+  - component: {fileID: 1784949456}
+  m_Layer: 0
+  m_Name: Text (TMP)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1784949455
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784949454}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 112961590}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.02, y: 2.24}
+  m_SizeDelta: {x: 6.8057, y: 1.8396}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1784949456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784949454}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9541d86e2fd84c1d9990edf0852d74ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 16777215
+  m_fontColor: {r: 1, g: 1, b: 1, a: 0}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 5.45
+  m_fontSizeBase: 8
+  m_fontWeight: 400
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 4.6
+  m_fontSizeMax: 5.75
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 0
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  _SortingLayer: 0
+  _SortingLayerID: 0
+  _SortingOrder: 0
+  m_hasFontAssetChanged: 0
+  m_renderer: {fileID: 1784949457}
+  m_maskType: 0
+--- !u!23 &1784949457
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1784949454}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1787859001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1214,7 +1398,19 @@ MonoBehaviour:
     m_ActionId: 2225537d-a752-418e-80c6-413f13f05f45
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1983969878}
+        m_TargetAssemblyTypeName: BasicMovementScript, Assembly-CSharp
+        m_MethodName: Raycast
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: d0268789-e8ef-4f0f-aeae-a78194b4a871
     m_ActionName: Player/Look[/Mouse/delta,/Touchscreen/delta,/Pen/delta]
   - m_PersistentCalls:
@@ -1293,16 +1489,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterType: 0
+  maxIntelligenceLevel: 5
   quipLibrary:
     character:
-    - name: DefaultPerson
-      characterType: 3
+    - name: FirePerson
+      characterType: 1
       intelligenceLevel:
       - name: 0
         possibleQuips:
-        - quip: ggdbgbgbgbggbg
+        - quip: Hurrr  hur, flames
       - name: 1
-        possibleQuips: []
+        possibleQuips:
+        - quip: regregregrger
+        - quip: gregreag
       - name: 2
         possibleQuips: []
       - name: 3
@@ -1310,6 +1509,40 @@ MonoBehaviour:
       - name: 4
         possibleQuips: []
     - name: DefaultPerson
+      characterType: 0
+      intelligenceLevel:
+      - name: 0
+        possibleQuips:
+        - quip: oh shit 1
+        - quip: oh shit 2
+        - quip: oh shit 3
+        - quip: oh shit 4
+      - name: 1
+        possibleQuips:
+        - quip: job 1
+        - quip: job 2
+        - quip: job 3
+      - name: 2
+        possibleQuips:
+        - quip: youtube
+        - quip: twitch
+        - quip: vimeO
+      - name: 3
+        possibleQuips:
+        - quip: Dog
+        - quip: Cat
+        - quip: Bird
+      - name: 4
+        possibleQuips:
+        - quip: Pizza
+        - quip: Pasta
+        - quip: Pepsi
+      - name: 5
+        possibleQuips:
+        - quip: azan
+        - quip: pu$$y
+        - quip: swag
+    - name: GrapplePerson
       characterType: 2
       intelligenceLevel:
       - name: 0
@@ -1322,13 +1555,13 @@ MonoBehaviour:
         possibleQuips: []
       - name: 4
         possibleQuips: []
-    - name: DefaultPerson
-      characterType: 0
+      - name: 5
+        possibleQuips: []
+    - name: IcePerson
+      characterType: 3
       intelligenceLevel:
       - name: 0
-        possibleQuips:
-        - quip: dhnt
-        - quip: nynrjn
+        possibleQuips: []
       - name: 1
         possibleQuips: []
       - name: 2
@@ -1337,9 +1570,38 @@ MonoBehaviour:
         possibleQuips: []
       - name: 4
         possibleQuips: []
-  _intelligenceLevel: 0
-  _maxIntelligenceLevel: 5
-  maxIntelligence: 4
+      - name: 5
+        possibleQuips: []
+    - name: TeleportPerson
+      characterType: 4
+      intelligenceLevel:
+      - name: 0
+        possibleQuips: []
+      - name: 1
+        possibleQuips: []
+      - name: 2
+        possibleQuips: []
+      - name: 3
+        possibleQuips: []
+      - name: 4
+        possibleQuips: []
+      - name: 5
+        possibleQuips: []
+    - name: TeleportPerson
+      characterType: 4
+      intelligenceLevel:
+      - name: 0
+        possibleQuips: []
+      - name: 1
+        possibleQuips: []
+      - name: 2
+        possibleQuips: []
+      - name: 3
+        possibleQuips: []
+      - name: 4
+        possibleQuips: []
+      - name: 5
+        possibleQuips: []
 --- !u!1 &1983969877
 GameObject:
   m_ObjectHideFlags: 0
@@ -1390,6 +1652,8 @@ MonoBehaviour:
   _raycastPoint: {fileID: 289936486}
   _raycastDistance: 7.65
   raycastColour: {r: 0.79607844, g: 0, b: 0, a: 1}
+  raycastScriptReferences:
+    quipScript: {fileID: 0}
 --- !u!143 &1983969879
 CharacterController:
   m_ObjectHideFlags: 0

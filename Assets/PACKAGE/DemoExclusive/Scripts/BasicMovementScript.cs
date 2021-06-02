@@ -18,6 +18,7 @@ public class BasicMovementScript : MonoBehaviour
     private CharacterController _characterController;
     private InputActionAsset _inputAction;
 
+
     [Header("Control Details")]
     [SerializeField]
     private GameObject _playerAvatarObject;
@@ -33,7 +34,7 @@ public class BasicMovementScript : MonoBehaviour
 
     [Space(10)]
 
-    [Range(0,5)]
+    [Range(0, 5)]
     [SerializeField]
     private float _rotationSpeed = .75f;
     [SerializeField]
@@ -54,6 +55,9 @@ public class BasicMovementScript : MonoBehaviour
     private float _raycastDistance;
     public Color raycastColour;
 
+    [Header("Script References")]
+    [SerializeField]
+    private RaycastScriptReferences raycastScriptReferences;
     /// <summary>
     /// Invisble to Inspector
     /// </summary>
@@ -132,7 +136,8 @@ public class BasicMovementScript : MonoBehaviour
         CheckGravity();
         ApplyGravity();
         Movement(_moveAxis);
-        Raycast();
+        Debug.DrawRay(_raycastPoint.position, _raycastPoint.forward * _raycastDistance, raycastColour, Time.deltaTime);
+        //Raycast();
     }
 
     /// <summary>
@@ -155,7 +160,7 @@ public class BasicMovementScript : MonoBehaviour
     void ApplyGravity()
     {
         //Reset the MoveVector
-      //  Debug.Log(gameObject.name + ": Character controller is currently " + _characterController.isGrounded);
+        //  Debug.Log(gameObject.name + ": Character controller is currently " + _characterController.isGrounded);
         if (_gravitySettings.useCustomGravity && !_characterController.isGrounded)
         {
             _moveVector = Vector3.zero;
@@ -234,22 +239,23 @@ public class BasicMovementScript : MonoBehaviour
         }
     }
 
-    void Raycast()
+    public void Raycast(InputAction.CallbackContext context)
     {
         RaycastHit hit;
-        Debug.DrawRay(_raycastPoint.position, _raycastPoint.forward * _raycastDistance, raycastColour, Time.deltaTime);
-        if (Physics.Raycast(_raycastPoint.position, _raycastPoint.forward, out hit, _raycastDistance))
-        { 
-            //Below is the if statement to find objects. Can be used from Unity 2017 onwards, otherwise use GetComponent instead of TryGetComponent()
-          /*  if(hit.collider.TryGetComponent())
-            {
 
+        if (Physics.Raycast(_raycastPoint.position, _raycastPoint.forward, out hit, _raycastDistance) && context.performed)
+        {
+            //Below is the if statement to find objects. Can be used from Unity 2017 onwards, otherwise use GetComponent instead of TryGetComponent()
+            if (hit.collider.TryGetComponent(out QuipScript newQuipScript))
+            {
+                newQuipScript.UpdateText();
             }
-          */
+
         }
+
     }
 
-            void Movement(Vector2 _inputTranslation)
+    void Movement(Vector2 _inputTranslation)
     {
         //Sets up movement
         _horizontalAxis = _inputTranslation.x;
@@ -279,24 +285,24 @@ public class BasicMovementScript : MonoBehaviour
             default:
                 break;
         }
-        
+
     }
 
     void MovementRotation(Vector3 _desiredMoveDirection)
     {
         if (_desiredMoveDirection != Vector3.zero && _playerAvatarObject != null)
         {
-            _playerAvatarObject.transform.rotation =  Quaternion.Slerp(_playerAvatarObject.transform.rotation, Quaternion.LookRotation(_desiredMoveDirection), _rotationSpeed /10);
+            _playerAvatarObject.transform.rotation = Quaternion.Slerp(_playerAvatarObject.transform.rotation, Quaternion.LookRotation(_desiredMoveDirection), _rotationSpeed / 10);
         }
 
-        else if(_desiredMoveDirection != Vector3.zero)
+        else if (_desiredMoveDirection != Vector3.zero)
         {
             Debug.LogError("Could not find Player Avatar Object as part of the BasicMovementScript " + gameObject.name + ". Resolve null reference to get player rotation");
         }
 
     }
 
-    //Movement Input specific
+
 }
 
 [System.Serializable]
@@ -310,4 +316,10 @@ public class GravityOptions
     [Space(10)]
 
     public UnityEvent onCustomGravityStrengthChange;
+}
+
+[System.Serializable]
+public class RaycastScriptReferences
+{
+    public QuipScript quipScript;
 }
