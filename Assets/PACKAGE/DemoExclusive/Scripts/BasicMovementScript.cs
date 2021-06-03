@@ -37,27 +37,17 @@ public class BasicMovementScript : MonoBehaviour
     [Range(0, 5)]
     [SerializeField]
     private float _rotationSpeed = .75f;
-    [SerializeField]
-    private Vector3 _rotationOffset;
 
-    [Header("Gravity")]
-    [SerializeField]
-    private GravityOptions _gravitySettings;
+    [Header("World Interaction")]
     [ReadOnly]
     [SerializeField]
-    private Vector3 _moveVector; //debug purposes only
+    private Vector3 _currentMovement; //debug purposes only
+    [SerializeField]
+    private GravityOptions _gravitySettings;
+    [SerializeField]
+    private RaycastDetails _raycast;
 
-    [Header("Raycast")]
-    [SerializeField]
-    [Tooltip("This decides where the raycast comes from Leave this variable blank for it to default to this gameobject.")]
-    private Transform _raycastPoint;
-    [SerializeField]
-    private float _raycastDistance;
-    public Color raycastColour;
 
-    [Header("Script References")]
-    [SerializeField]
-    private RaycastScriptReferences raycastScriptReferences;
     /// <summary>
     /// Invisble to Inspector
     /// </summary>
@@ -70,8 +60,6 @@ public class BasicMovementScript : MonoBehaviour
     {
         CheckForNullReference();
         AwakeGravity();
-
-
     }
 
     private void Start()
@@ -123,10 +111,10 @@ public class BasicMovementScript : MonoBehaviour
         }
 
         //If the Raycast starting point hasn't been assigned...
-        if (_raycastPoint == null)
+        if (_raycast.raycastPoint == null && _raycast.useRaycast)
         {
             Debug.LogWarning("Could not find Raycast Point transform. Raycast may not be in the desired position as a result, add a reference if it is inaccurate");
-            _raycastPoint = transform;
+            _raycast.raycastPoint = transform;
         }
     }
 
@@ -136,8 +124,11 @@ public class BasicMovementScript : MonoBehaviour
         CheckGravity();
         ApplyGravity();
         Movement(_moveAxis);
-        Debug.DrawRay(_raycastPoint.position, _raycastPoint.forward * _raycastDistance, raycastColour, Time.deltaTime);
-        //Raycast();
+        if(_raycast.useRaycast)
+        {
+            Debug.DrawRay(_raycast.raycastPoint.position, _raycast.raycastPoint.forward * _raycast.raycastDistance, _raycast.raycastColour, Time.deltaTime);
+            //Raycast();
+        }
     }
 
     /// <summary>
@@ -163,16 +154,16 @@ public class BasicMovementScript : MonoBehaviour
         //  Debug.Log(gameObject.name + ": Character controller is currently " + _characterController.isGrounded);
         if (_gravitySettings.useCustomGravity && !_characterController.isGrounded)
         {
-            _moveVector = Vector3.zero;
+            _currentMovement = Vector3.zero;
             _characterController.Move(_gravitySettings.customGravityDetails * Time.deltaTime);
-            _moveVector += _gravitySettings.customGravityDetails;
+            _currentMovement += _gravitySettings.customGravityDetails;
         }
 
         else if (!_gravitySettings.useCustomGravity && !_characterController.isGrounded)
         {
-            _moveVector = Vector3.zero;
+            _currentMovement = Vector3.zero;
             _characterController.Move(Physics.gravity * Time.deltaTime); ;
-            _moveVector += Physics.gravity;
+            _currentMovement += Physics.gravity;
         }
     }
 
@@ -199,7 +190,6 @@ public class BasicMovementScript : MonoBehaviour
     public void adjustMovementVector(InputAction.CallbackContext context)
     {
         _moveAxis = context.ReadValue<Vector2>();  //Mainly for debugging. You can place Context.ReadValue directly into the Movement argument if desired.
-
     }
 
 
@@ -242,17 +232,14 @@ public class BasicMovementScript : MonoBehaviour
     public void Raycast(InputAction.CallbackContext context)
     {
         RaycastHit hit;
-
-        if (Physics.Raycast(_raycastPoint.position, _raycastPoint.forward, out hit, _raycastDistance) && context.performed)
+        if (_raycast.useRaycast && Physics.Raycast(_raycast.raycastPoint.position, _raycast.raycastPoint.forward, out hit, _raycast.raycastDistance) && context.performed)
         {
             //Below is the if statement to find objects. Can be used from Unity 2017 onwards, otherwise use GetComponent instead of TryGetComponent()
             if (hit.collider.TryGetComponent(out QuipScript newQuipScript))
             {
                 newQuipScript.UpdateText();
             }
-
         }
-
     }
 
     void Movement(Vector2 _inputTranslation)
@@ -281,11 +268,9 @@ public class BasicMovementScript : MonoBehaviour
                 _characterController.Move(desiredMovementDirection * Time.deltaTime * MovementMultiplier);
                 MovementRotation(_rotationDirection);
                 break;
-
             default:
                 break;
         }
-
     }
 
     void MovementRotation(Vector3 _desiredMoveDirection)
@@ -299,10 +284,7 @@ public class BasicMovementScript : MonoBehaviour
         {
             Debug.LogError("Could not find Player Avatar Object as part of the BasicMovementScript " + gameObject.name + ". Resolve null reference to get player rotation");
         }
-
     }
-
-
 }
 
 [System.Serializable]
@@ -319,7 +301,11 @@ public class GravityOptions
 }
 
 [System.Serializable]
-public class RaycastScriptReferences
+public class RaycastDetails
 {
-    public QuipScript quipScript;
+    public bool useRaycast;
+    [Tooltip("This decides where the raycast comes from Leave this variable blank for it to default to this gameobject.")]
+    public Transform raycastPoint;
+    public float raycastDistance;
+    public Color raycastColour;
 }

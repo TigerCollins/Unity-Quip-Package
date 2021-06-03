@@ -228,7 +228,7 @@ MonoBehaviour:
   maxMovementClamp: 1
   _moveAxis: {x: 0, y: 0}
   _rotationSpeed: 0
-  _rotationOffset: {x: 0, y: 0, z: 0}
+  _currentMovement: {x: 0, y: 0, z: 0}
   _gravitySettings:
     useCustomGravity: 0
     customGravityDetails: {x: 0, y: -0.09, z: 0}
@@ -236,12 +236,11 @@ MonoBehaviour:
     onCustomGravityStrengthChange:
       m_PersistentCalls:
         m_Calls: []
-  _moveVector: {x: 0, y: 0, z: 0}
-  _raycastPoint: {fileID: 0}
-  _raycastDistance: 0
-  raycastColour: {r: 0, g: 0, b: 0, a: 0}
-  raycastScriptReferences:
-    quipScript: {fileID: 0}
+  _raycast:
+    useRaycast: 0
+    raycastPoint: {fileID: 0}
+    raycastDistance: 0
+    raycastColour: {r: 0, g: 0, b: 0, a: 0}
 --- !u!23 &112961593
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1640,7 +1639,7 @@ MonoBehaviour:
   maxMovementClamp: 1
   _moveAxis: {x: 0, y: 0}
   _rotationSpeed: 3.37
-  _rotationOffset: {x: 0, y: 0, z: 0}
+  _currentMovement: {x: 0, y: 0, z: 0}
   _gravitySettings:
     useCustomGravity: 0
     customGravityDetails: {x: 0, y: 0, z: 0}
@@ -1648,12 +1647,11 @@ MonoBehaviour:
     onCustomGravityStrengthChange:
       m_PersistentCalls:
         m_Calls: []
-  _moveVector: {x: 0, y: 0, z: 0}
-  _raycastPoint: {fileID: 289936486}
-  _raycastDistance: 7.65
-  raycastColour: {r: 0.79607844, g: 0, b: 0, a: 1}
-  raycastScriptReferences:
-    quipScript: {fileID: 0}
+  _raycast:
+    useRaycast: 1
+    raycastPoint: {fileID: 289936486}
+    raycastDistance: 1
+    raycastColour: {r: 1, g: 0, b: 0, a: 1}
 --- !u!143 &1983969879
 CharacterController:
   m_ObjectHideFlags: 0
