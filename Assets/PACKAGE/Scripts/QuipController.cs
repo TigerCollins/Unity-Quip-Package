@@ -8,19 +8,44 @@ public class QuipController : MonoBehaviour
     /// <summary>
     /// Visible in inspector
     /// </summary>
-    public CharacterType characterType;
-    [SerializeField]
+
     [ReadOnly]
-    [Tooltip("The lower the number, the dumber the quip")]
-    public int maxIntelligenceLevel;
+    public readonly int maxIntelligenceLevel = 5;
+    [Tooltip("The amount of quips allowed to be activated at once")]
+    [Min(1)]
+    public int maxQuipCount = 2;
+    [ReadOnly]
+    public int currentQuipCount;
+    [ReadOnly]
+    [SerializeField]
+    private int mostRecentIntelligenceInt;
+
+    [Space(5)]
+
+    [Tooltip("Time quip is visible on screen.")]
+    public float quipTime;
+
+    [Space(10)]
+    public ProximityDisplay proximityDisplay;
+
+    [Header("Quip Library")]
+    public Person[] character;
 
 
-    public QuipLibrary quipLibrary;
+
 
     /// <summary>
     /// Hidden in inspector
     /// </summary>
 
+    [HideInInspector]
+    public CharacterType characterType;
+    [HideInInspector]
+    public int wantedIntelligenceInt;
+    [HideInInspector]
+    public CharacterType wantedCharacterType;
+    private int wantedQuipInt;
+    private QuipScript latestQuipScript;
     public enum CharacterType
     {
         [InspectorName("Default Person - Ezio")]
@@ -40,57 +65,153 @@ public class QuipController : MonoBehaviour
     {
         UpdateQuipNameInspector();
         UpdateIntelligenceLevelInspector();
+        if(proximityDisplay.playerTransform == null)
+        {
+            Debug.LogError("Couldn't find play transform. Assign variable to resolve errors.");
+        }
     }
 
 
     private void Update()
     {
-       // if(!Application.isPlaying)
-        //{
-            UpdateQuipNameInspector();
-            UpdateIntelligenceLevelInspector();
-       // }
 
-   
-    }
-
-   
-
+        ProximityCountdown();
 
 #if UNITY_EDITOR
+        UpdateQuipNameInspector();
+        UpdateIntelligenceLevelInspector();
+#endif
+    }
+
+
+
+    public void WantedQuip(QuipScript quipScript)
+    {
+        wantedIntelligenceInt = quipScript.intelligenceInt - 1;
+        wantedCharacterType = quipScript.characterType;
+        latestQuipScript = quipScript;
+     
+        quipScript.selectedQuip = CallQuip;
+        latestQuipScript = null;
+    }
+
+    public float SetCooldownTime
+    {
+        get
+        {
+            if(proximityDisplay.randomiseCooldownTime)
+            {
+                return Random.Range(3, 15);
+            }
+
+            else
+            {
+                return proximityDisplay.cooldownTime;
+            }
+        }
+    }
+
+    public string CallQuip
+    {
+        get
+        {
+            string tempString = string.Empty;
+            for (int i = 0; i < character.Length; i++)
+            {
+                if (character.Length != 0)
+                {
+                    if(character[i].intelligenceLevel.Count != 0)
+                    {
+                        if (character[i].characterType == wantedCharacterType)
+                        {
+                            if (wantedIntelligenceInt > character[i].intelligenceLevel.Count)
+                            {
+                                Debug.LogWarning("Couldn't find the desired intelligence level, clamping int to return string and " +
+                                    "lowering and adjusting the orignal QuipScript. Try adding intelligence levels in the Quip library " +
+                                    "under " + character[i].characterType.ToString() +" to avoid this.");
+                                int newIntelligenceInt = Mathf.Clamp(wantedIntelligenceInt, 0, character[i].intelligenceLevel.Count - 1);
+                                wantedIntelligenceInt = newIntelligenceInt;
+                                latestQuipScript.intelligenceInt = newIntelligenceInt + 1; //
+                                if (character[i].intelligenceLevel[newIntelligenceInt].possibleQuips.Length > 0)
+                                {
+                                    wantedQuipInt = Random.Range(0, character[i].intelligenceLevel[newIntelligenceInt].possibleQuips.Length);
+                                    tempString = character[i].intelligenceLevel[newIntelligenceInt].possibleQuips[wantedQuipInt].quipString;
+                                }
+                            }
+
+                            else
+                            {
+                                if (character[i].intelligenceLevel[wantedIntelligenceInt].possibleQuips.Length > 0)
+                                {
+
+                                    wantedQuipInt = Random.Range(0, character[i].intelligenceLevel[wantedIntelligenceInt].possibleQuips.Length);
+                                    tempString = character[i].intelligenceLevel[wantedIntelligenceInt].possibleQuips[wantedQuipInt].quipString;
+                                }
+                            }
+                            mostRecentIntelligenceInt = wantedIntelligenceInt;
+                            break;
+                        }
+                    }
+
+                    else
+                    {
+                        Debug.LogError("Couldn't find any presets for intelligence, add some to the Quip Library under " + character[i].characterType.ToString());
+                    }
+                   
+                }
+
+                else
+                {
+                    Debug.LogError("Couldn't find any characters, add some to the Quip Library");
+                }
+            }
+            return tempString;
+
+            //Debug.LogError("Cannot get IntelligenceCheck as  is null...");
+
+        }
+    }
+
+
+    void ProximityCountdown()
+    {
+        if(proximityDisplay.cooldownTimeRemaining > 0)
+        {
+            proximityDisplay.cooldownTimeRemaining -= Time.deltaTime;
+        }
+    }
+
+#if UNITY_EDITOR
+
+
     private void UpdateQuipNameInspector()
     {
-       for (int i = 0; i<quipLibrary.character.Length; i++)
+        for (int i = 0; i < character.Length; i++)
+        {
+            //Ran in an if statement for performance while in engine
+            if (character[i].characterType.ToString() != character[i].name)
             {
-                //Ran in an if statement for performance while in engine
-                if(quipLibrary.character[i].characterType.ToString() != quipLibrary.character[i].name)
-                {
-                    quipLibrary.character[i].name = quipLibrary.character[i].characterType.ToString();
-                }
-                
+                character[i].name = character[i].characterType.ToString();
             }
+
+        }
     }
 
     public void UpdateIntelligenceLevelInspector()
     {
-        for (int i = 0; i < quipLibrary.character.Length; i++)
+        for (int i = 0; i < character.Length; i++)
         {
-            for (int ii = 0; ii < quipLibrary.character[i].intelligenceLevel.Capacity; ii++)
+            for (int ii = 0; ii < character[i].intelligenceLevel.Capacity; ii++)
             {
-                quipLibrary.character[i].intelligenceLevel[ii].UpdateElementName(ii);
+                character[i].intelligenceLevel[ii].UpdateElementName(ii);
             }
-        }     
+        }
     }
 
 #endif
 }
 
 
-[System.Serializable]
-public class QuipLibrary
-{
-    public Person[] character;
-}
 
 [System.Serializable]
 public class Person
@@ -114,7 +235,8 @@ public class IntelligenceLevel
     public Quip[] possibleQuips;
     public void UpdateElementName(int charID)
     {
-        name = charID.ToString();
+        int newID = charID + 1;
+        name = newID.ToString();
     }
 
 }
@@ -122,5 +244,20 @@ public class IntelligenceLevel
 [System.Serializable]
 public class Quip
 {
-    public string quip;
+    public string quipString;
 }
+
+[System.Serializable]
+public class ProximityDisplay
+{
+    public Transform playerTransform;
+
+    [Space(10)]
+
+    public bool randomiseCooldownTime = true;
+    [Tooltip("Cooldown before next proximity quip can be shown.")]
+    public float cooldownTime;
+    [ReadOnly]
+    public float cooldownTimeRemaining;
+}
+
